@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/bluetooth" android:id="@+id/menu_item_bluetooth"
+          android:icon="@android:drawable/stat_sys_data_bluetooth"
+          app:showAsAction="ifRoom"/>
+    <item android:title="@string/wifi" android:id="@+id/menu_item_wifi" android:icon="@android:drawable/ic_menu_send"
+          app:showAsAction="ifRoom"/>
+    <item android:title="@string/both" android:id="@+id/menu_item_both" android:icon="@android:drawable/btn_star"
+          app:showAsAction="ifRoom"/>
+</menu>
