@@ -22,3 +22,4 @@ class BlankFragment : Fragment() {
             BlankFragment()
     }
 }
+

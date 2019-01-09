@@ -80,8 +80,8 @@ private class TabViewPagerAdapter(fm: FragmentManager, private val kind: Int) : 
         return when (kind) {
             KIND_BT -> {
                 when (position) {
-                    0 -> BlankFragment.newInstance()
-                    1 -> BlankFragment.newInstance()
+                    0 -> BluetoothBeaconFragment.newInstance()
+                    1 -> BluetoothScannerFragment.newInstance()
                     else -> throw IndexOutOfBoundsException(position.toString())
                 }
             }
