@@ -10,13 +10,15 @@ The average error of the measurements are around 20cm with no obsticles on short
 
 # Wifi implementation
 I used wifi hotspots on android as beacons. The position is advertised through the name of the network.
-The distance is measured with the following formula TODO values
+The distance is measured with the following formula [TODO: formula]
 
-The scans are done TODO value. I cut off the top and bottom outliers and calculate the average of the remaining. The bluetooth scanning uses the same method.
+The scans are done [TODO: value]. I cut off the top and bottom outliers and calculate the average of the remaining. The bluetooth scanning uses the same method.
 
-Accuracy TODO value
+Accuracy [TODO: value]
 
 # Results
+
+# Closing thoughts
 
 # References
 
