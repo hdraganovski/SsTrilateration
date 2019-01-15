@@ -4,6 +4,7 @@ package com.example.dragon.sstrilateration.fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,19 +53,15 @@ class BluetoothBeaconFragment : Fragment() {
                 bBeaconFragment_url.isEnabled = true
             }
             else {
-                val url = bBeaconFragment_url.text.toString()
+                val url = "https://${bBeaconFragment_url.text}"
 
-                if(url.isNotEmpty()) {
-                    EddystoneURL("https://$url").apply {
+                EddystoneURL(url).apply {
                         start()
                         activeBeacon = this
 
                         bBeaconFragment_url.isEnabled = false
                     }
-                }
-                else {
-                    buttonView.performClick()
-                }
+                Log.d("Beacon", "Started with url: $url")
             }
         }
 

@@ -4,7 +4,8 @@ data class Position(
     var tag: String,
     var x: Double,
     var y: Double,
-    var d: Double
+    var d: Double,
+    var no: Int = 0
 ) {
 
     fun xyVectorized() = doubleArrayOf(x, y)

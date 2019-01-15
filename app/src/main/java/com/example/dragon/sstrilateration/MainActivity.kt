@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity(), MainInteractionListener {
 
         setUpBluetooth()
 
+        setUpWifi()
         if(this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 10)
         }
@@ -118,8 +120,8 @@ class MainActivity : AppCompatActivity(), MainInteractionListener {
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    private fun setUpWifi() {
+        val wifiMutableList = getSystemService(Context.WIFI_SERVICE) as WifiManager
     }
 
 }

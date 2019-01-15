@@ -30,8 +30,9 @@
                 android:enabled="true"
                 android:exported="false">
             <intent-filter>
-                <action android:name="com.example.dragon.sstrilateration.BLUETOOTH_SERVICE" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="com.example.dragon.sstrilateration.BLUETOOTH_SERVICE"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </service>
     </application>

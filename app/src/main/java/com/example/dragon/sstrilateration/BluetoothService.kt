@@ -35,27 +35,24 @@ class BluetoothService : Service(), BeaconConsumer {
     }
 
     override fun onBeaconServiceConnect() {
-        beaconManager?.addRangeNotifier { beacons, region ->
-            beacons.forEach {
-                for (beacon in beacons) {
-                    if (beacon.serviceUuid == 0xfeaa && beacon.beaconTypeCode == 0x10) {
-                        // This is a Eddystone-URL frame
-                        val url = UrlBeaconUrlCompressor.uncompress(beacon.id1.toByteArray())
-                        Log.d(
-                            "Beacon", "I see a beacon transmitting a url: " + url +
-                                    " approximately " + beacon.distance + " meters away."
-                        )
-                    }
-                }
+        beaconManager?.addRangeNotifier { beacons, _ ->
+            beacons.forEach { beacon ->
+                val url = UrlBeaconUrlCompressor.uncompress(beacon.id1.toByteArray())
+                Log.v(
+                    "Beacon", "I see a beacon transmitting a url: " + url +
+                            " approximately " + beacon.distance + " meters away."
+                )
             }
 
             lastBeacons = beacons
             changeListeners.forEach {
                 it.onChange(beacons)
             }
+
+
         }
 
-        beaconManager?.addMonitorNotifier(object: MonitorNotifier {
+        beaconManager?.addMonitorNotifier(object : MonitorNotifier {
             override fun didDetermineStateForRegion(state: Int, p1: Region?) {
                 Log.i("Range", "I have just switched from seeing/not seeing beacons: $state")
             }
@@ -69,6 +66,9 @@ class BluetoothService : Service(), BeaconConsumer {
             }
 
         })
+
+        beaconManager?.startRangingBeaconsInRegion(Region("w", null, null, null))
+        beaconManager?.startMonitoringBeaconsInRegion(Region("w", null, null, null))
     }
 
     override fun onDestroy() {
@@ -81,7 +81,11 @@ class BluetoothService : Service(), BeaconConsumer {
         cl.onChange(lastBeacons)
     }
 
-    inner class LocalBinder: Binder() {
+    fun removeUpdateListener(cl: ChangeListener) {
+        changeListeners.remove(cl)
+    }
+
+    inner class LocalBinder : Binder() {
         fun getService(): BluetoothService = this@BluetoothService
     }
 

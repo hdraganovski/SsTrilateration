@@ -18,6 +18,7 @@ fun computePoint(points: List<Position>): Position {
         tag = Position.TAG_GENERATED,
         x = result[0],
         y = result[1],
-        d = 0.0
+        d = 0.0,
+        no = points.size
     )
 }
