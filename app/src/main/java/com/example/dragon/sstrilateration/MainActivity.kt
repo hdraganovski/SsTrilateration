@@ -3,11 +3,9 @@ package com.example.dragon.sstrilateration
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
+import android.net.wifi.ScanResult
 import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
@@ -18,6 +16,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import com.example.dragon.sstrilateration.fragment.TabContentFragment
+import com.example.dragon.sstrilateration.fragment.WifiScanFragment
 import com.uriio.beacons.Beacons
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -35,12 +34,18 @@ class MainActivity : AppCompatActivity(), MainInteractionListener {
 
         setUpBluetooth()
 
-        setUpWifi()
         if(this.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), 10)
         }
         else {
 
+        }
+
+        if(this.checkSelfPermission(Manifest.permission.CHANGE_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CHANGE_WIFI_STATE), 11)
+        }
+        if(this.checkSelfPermission(Manifest.permission.ACCESS_WIFI_STATE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_WIFI_STATE), 12)
         }
 
     }
@@ -120,17 +125,29 @@ class MainActivity : AppCompatActivity(), MainInteractionListener {
         }
     }
 
-    private fun setUpWifi() {
-        val wifiMutableList = getSystemService(Context.WIFI_SERVICE) as WifiManager
-    }
+    override fun getWifiScanResults(lambda: (List<ScanResult>) -> Unit) {
+        val wifiManager = getSystemService(Context.WIFI_SERVICE) as WifiManager
 
+        val wifiScanReceiver = object: BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                intent?.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false)
+                lambda(wifiManager.scanResults)
+            }
+        }
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        this.registerReceiver(wifiScanReceiver, intentFilter)
+
+        wifiManager.startScan()
+    }
 }
 
 private class MainViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(i: Int): Fragment {
         return when (i) {
             BLUETOOTH -> TabContentFragment.newInstance(TabContentFragment.KIND_BT)
-            WIFI -> TabContentFragment.newInstance(TabContentFragment.KIND_WIFI)
+            WIFI -> WifiScanFragment.newInstance()
             BOTH -> TabContentFragment.newInstance(TabContentFragment.KIND_BOTH)
             else -> throw IndexOutOfBoundsException(i.toString())
         }

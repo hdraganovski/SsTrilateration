@@ -1,5 +1,6 @@
 package com.example.dragon.sstrilateration
 
+import android.net.wifi.ScanResult
 import com.lemmingapex.trilateration.NonLinearLeastSquaresSolver
 import com.lemmingapex.trilateration.TrilaterationFunction
 import org.apache.commons.math3.fitting.leastsquares.LevenbergMarquardtOptimizer
@@ -21,4 +22,9 @@ fun computePoint(points: List<Position>): Position {
         d = 0.0,
         no = points.size
     )
+}
+
+fun ScanResult.distance(): Double {
+    val exp = (27.55 - 20 * Math.log10(frequency.toDouble()) + Math.abs(level.toDouble())) / 20.0
+    return Math.pow(10.0, exp)
 }
